@@ -1,0 +1,549 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{biblatex} % For bibliography
+\addbibresource{references.bib}
+\usepackage{listings} % For code listings
+\usepackage{xcolor} % For colored text in listings
+
+% Define colors for code listings
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Styling for code listings
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    stringstyle=\color{codegreen},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=pythonstyle}
+
+% Page setup
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Project Report}
+\lhead{Rafael Julio S, Audrey Raymond I.}
+\rfoot{\thepage}
+
+% Title Info
+\title{\textbf{Implementasi Sistem Manajemen Kendaraan Berbasis PBO}\\
+\large }
+\author{Rafael Julio Suseno, Audrey Raymond Immanuel\\Student Number: 5803024012, 5803024017}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% Heading 1
+\section{Introduction}
+Laporan ini menyajikan implementasi sistem manajemen kendaraan menggunakan konsep pemrograman berorientasi objek (Object-Oriented Programming atau OOP) dalam bahasa pemrograman Python. Sistem ini dirancang untuk mengelola berbagai jenis kendaraan seperti mobil, motor, dan truk, dengan mempertimbangkan karakteristik dan fungsi unik dari masing-masing jenis kendaraan. Proyek ini bertujuan untuk mendemonstrasikan penerapan prinsip-prinsip OOP seperti inheritance (pewarisan), polymorphism (polimorfisme), encapsulation (enkapsulasi), dan abstraction (abstraksi) dalam konteks manajemen kendaraan.
+
+% Heading 2
+\subsection{Project Scope}
+Ruang lingkup proyek ini mencakup:
+\begin{itemize}
+    \item Pengembangan kelas dasar \textit{Kendaraan} yang mendefinisikan atribut dan metode umum
+    \item Implementasi kelas turunan untuk tipe kendaraan spesifik: \textit{Mobil}, \textit{Motor}, dan \textit{Truk}
+    \item Pengembangan sistem manajemen untuk menambah dan melihat koleksi kendaraan
+    \item Antarmuka pengguna berbasis konsol untuk interaksi dengan sistem
+\end{itemize}
+
+Proyek ini tidak mencakup penyimpanan data persisten (database), antarmuka grafis, atau fitur lanjutan seperti pencarian dan filter.
+
+% Heading 3
+\subsubsection{Related Work}
+Sistem manajemen kendaraan telah banyak dikembangkan dalam berbagai konteks seperti perusahaan rental kendaraan, manajemen armada, dan inventaris dealer kendaraan. Dibandingkan dengan sistem yang ada, implementasi ini berfokus pada aspek edukasi dan demonstrasi konsep OOP daripada fungsionalitas bisnis yang komprehensif. Beberapa karya terkait dalam bidang ini termasuk sistem manajemen armada perusahaan, aplikasi peminjaman kendaraan, dan sistem inventaris dealer.
+
+% Heading 2
+\subsection{Objectives}
+Tujuan utama dari proyek ini adalah:
+\begin{enumerate}
+    \item Mendemonstrasikan penerapan konsep OOP dalam pengembangan sistem informasi
+    \item Mengimplementasikan hierarki kelas dengan inheritance untuk mengelola berbagai jenis kendaraan
+    \item Mengembangkan sistem manajemen kendaraan yang modular dan extensible
+    \item Memfasilitasi penggunaan polimorfisme melalui override metode untuk perilaku khusus kendaraan
+\end{enumerate}
+
+% Heading 1
+\section{Konsep Dasar OOP}
+Pemrograman berorientasi objek (OOP) adalah paradigma pemrograman yang berfokus pada objek dan data daripada logika dan fungsi. Empat prinsip utama OOP yang diimplementasikan dalam proyek ini adalah:
+
+\subsection{Encapsulation (Enkapsulasi)}
+Enkapsulasi merujuk pada pembungkusan data dan metode yang memanipulasi data tersebut menjadi satu unit. Dalam proyek ini, setiap kelas kendaraan mengenkapsulasi atribut dan perilaku spesifiknya.
+
+\subsection{Inheritance (Pewarisan)}
+Pewarisan memungkinkan kelas untuk mewarisi atribut dan metode dari kelas lain. Dalam sistem ini, kelas \textit{Mobil}, \textit{Motor}, dan \textit{Truk} mewarisi dari kelas dasar \textit{Kendaraan}.
+
+\subsection{Polymorphism (Polimorfisme)}
+Polimorfisme memungkinkan metode melakukan aksi berbeda berdasarkan objek yang memanggil metode tersebut. Implementasi metode \textit{bergerak()} dan \textit{info()} yang berbeda di setiap kelas turunan adalah contoh polimorfisme.
+
+\subsection{Abstraction (Abstraksi)}
+Abstraksi berarti menyembunyikan detail implementasi yang kompleks dan hanya menampilkan fungsionalitas esensial. Kelas dasar \textit{Kendaraan} berfungsi sebagai abstraksi yang mendefinisikan interface umum untuk semua jenis kendaraan.
+
+% Heading 1
+\section{Arsitektur Sistem}
+Sistem manajemen kendaraan dibangun dengan arsitektur berorientasi objek yang terdiri dari beberapa komponen utama.
+
+\subsection{Class Diagram}
+\begin{figure}[h!]
+    \centering
+    % Gambar class diagram tidak tersedia, mendeskripsikan sebagai gantinya
+    \fbox{\parbox{0.8\textwidth}{
+        \centering
+        \textbf{Class Diagram}\\
+        \vspace{0.5cm}
+        \begin{tabular}{|c|}
+        \hline
+        \textbf{Kendaraan} \\
+        \hline
+        - jumlah\_roda\\
+        - bahan\_bakar\\
+        - warna\\
+        \hline
+        + info()\\
+        + bergerak()\\
+        \hline
+        \end{tabular}
+        \hspace{0.5cm}  \hspace{0.5cm}
+        \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Mobil} & \textbf{Motor} & \textbf{Truk} \\
+        \hline
+        - model & - jenis\_stang & - muatan\_maksimum \\
+        - jumlah\_pintu & - tipe\_motor & - muatan\_saat\_ini \\
+        \hline
+        + info() & + info() & + info() \\
+        + bergerak() & + bergerak() & + bergerak() \\
+        + klakson() & + wheelie() & + muat() \\
+        & & + bongkar() \\
+        \hline
+        \end{tabular}
+        \vspace{0.5cm}
+        
+        \begin{tabular}{|c|}
+        \hline
+        \textbf{ManajemenKendaraan} \\
+        \hline
+        - kendaraan \\
+        \hline
+        + tambah\_kendaraan() \\
+        + lihat\_semua\_kendaraan() \\
+        \hline
+        \end{tabular}
+    }}
+    \caption{Diagram Kelas Sistem Manajemen Kendaraan}
+    \label{fig:class-diagram}
+\end{figure}
+
+\subsection{Struktur Komponen}
+Sistem ini terdiri dari empat kelas utama dan beberapa fungsi pembantu:
+
+\begin{enumerate}
+    \item \textbf{Kelas Kendaraan}: Kelas dasar (parent class) yang mendefinisikan atribut dan metode umum untuk semua jenis kendaraan.
+    \item \textbf{Kelas Mobil}: Kelas turunan dari Kendaraan dengan atribut dan metode khusus untuk mobil.
+    \item \textbf{Kelas Motor}: Kelas turunan dari Kendaraan dengan atribut dan metode khusus untuk motor.
+    \item \textbf{Kelas Truk}: Kelas turunan dari Kendaraan dengan atribut dan metode khusus untuk truk, termasuk manajemen muatan.
+    \item \textbf{Kelas ManajemenKendaraan}: Kelas untuk mengelola koleksi kendaraan.
+    \item \textbf{Fungsi Pembantu}: Fungsi untuk membuat instance kendaraan dan menjalankan program utama.
+\end{enumerate}
+
+
+%Heading 1
+\section{Flowchart Program Manajemen Kendaraan dan Struktur Program}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{coba coba.drawio.pdf}
+    \caption{Flowchart Program}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsection{Program dimulai}
+Dengan inisialisasi sistem manajemen kendaraan dan menampilkan menu utama.
+\subsection{Menu Utama}
+\begin{itemize}
+    \item Tambah Mobil
+    \item Tambah Motor
+    \item Tambah Truk
+    \item Lihat Semua Kendaraan
+    \item Keluar Program
+\end{itemize}
+\subsection{Proses Tambah Kendaraan}
+Untuk setiap jenis kendaraan(Mobil, Motor, Truk), program akan:
+\begin{itemize}
+    \item Meminta input data
+    \item Memvalidasi data
+    \item Membuat objek kendaraan jika data valid
+    \item Menambahkan objek ke sistem manajemen
+    \item Kembali ke menu utama
+\end{itemize}
+\subsection{Lihat Semua Kendaraan}
+\begin{itemize}
+    \item Menampilkan daftar semua kendaraan yang sudah terdaftar
+    \item Kembali ke menu utama
+\end{itemize}
+\subsection{Struktur Kelas}
+Di bagian bawah flowchart, ditunjukkan hubungan inheritance(pewarisan) dimana:
+\begin{itemize}
+    \item Kelas Kendaraan menjadi parent class
+    \item Kelas Mobil, Motor, dan Truk mewarisi dari kelas Kendaraan
+\end{itemize}
+% Heading 1
+\section{Implementasi}
+Bagian ini menjelaskan implementasi sistem manajemen kendaraan dalam bahasa Python.
+
+\subsection{Kelas Dasar: Kendaraan}
+Kelas \textit{Kendaraan} merupakan kelas dasar yang mendefinisikan atribut dan metode umum untuk semua jenis kendaraan.
+
+\begin{lstlisting}[language=Python, caption=Implementasi Kelas Kendaraan]
+class Kendaraan:
+    """
+    Kelas dasar untuk semua jenis kendaraan.
+    """
+    def __init__(self, jumlah_roda, bahan_bakar, warna):
+        self.jumlah_roda = jumlah_roda
+        self.bahan_bakar = bahan_bakar
+        self.warna = warna
+    
+    def info(self):
+        return f"Kendaraan dengan {self.jumlah_roda} roda, berbahan bakar {self.bahan_bakar}, berwarna {self.warna}"
+    
+    def bergerak(self):
+        return "Kendaraan bergerak"
+\end{lstlisting}
+
+\subsection{Kelas Turunan}
+\subsubsection{Kelas Mobil}
+Kelas \textit{Mobil} mewarisi atribut dan metode dari kelas \textit{Kendaraan} dan menambahkan fungsionalitas khusus untuk mobil.
+
+\begin{lstlisting}[language=Python, caption=Implementasi Kelas Mobil]
+class Mobil(Kendaraan):
+    """
+    Kelas untuk jenis kendaraan Mobil.
+    """
+    def __init__(self, bahan_bakar, warna, model, jumlah_pintu):
+        super().__init__(4, bahan_bakar, warna)
+        self.model = model
+        self.jumlah_pintu = jumlah_pintu
+    
+    def info(self):
+        return f"{super().info()}. Model: {self.model}, Jumlah pintu: {self.jumlah_pintu}"
+    
+    def bergerak(self):
+        return "Mobil melaju di jalan raya"
+    
+    def klakson(self):
+        return "Tin Tin!"
+\end{lstlisting}
+
+\subsubsection{Kelas Motor}
+Kelas \textit{Motor} juga mewarisi dari kelas \textit{Kendaraan} dan mengimplementasikan perilaku khusus motor.
+
+\begin{lstlisting}[language=Python, caption=Implementasi Kelas Motor]
+class Motor(Kendaraan):
+    """
+    Kelas untuk jenis kendaraan Motor.
+    """
+    def __init__(self, bahan_bakar, warna, jenis_stang, tipe_motor):
+        super().__init__(2, bahan_bakar, warna)
+        self.jenis_stang = jenis_stang
+        self.tipe_motor = tipe_motor
+    
+    def info(self):
+        return f"{super().info()}. Tipe: {self.tipe_motor}, Jenis stang: {self.jenis_stang}"
+    
+    def bergerak(self):
+        return "Motor melaju dengan lincah"
+    
+    def wheelie(self):
+        return "Motor melakukan wheelie!"
+\end{lstlisting}
+
+\subsubsection{Kelas Truk}
+Kelas \textit{Truk} mewarisi dari kelas \textit{Kendaraan} dan menambahkan fungsionalitas manajemen muatan.
+
+\begin{lstlisting}[language=Python, caption=Implementasi Kelas Truk]
+class Truk(Kendaraan):
+    """
+    Kelas untuk jenis kendaraan Truk.
+    """
+    def __init__(self, bahan_bakar, warna, muatan_maksimum, jumlah_roda=6):
+        if jumlah_roda < 4:
+            raise ValueError("Truk harus memiliki minimal 4 roda!")
+        super().__init__(jumlah_roda, bahan_bakar, warna)
+        self.muatan_maksimum = muatan_maksimum
+        self.muatan_saat_ini = 0
+    
+    def info(self):
+        return f"{super().info()}. Muatan maksimum: {self.muatan_maksimum} kg, Muatan saat ini: {self.muatan_saat_ini} kg"
+    
+    def bergerak(self):
+        return "Truk berjalan dengan berat"
+    
+    def muat(self, berat):
+        if berat < 0:
+            return "Berat muatan tidak boleh negatif!"
+        if self.muatan_saat_ini + berat <= self.muatan_maksimum:
+            self.muatan_saat_ini += berat
+            return f"Berhasil memuat {berat} kg. Total muatan sekarang: {self.muatan_saat_ini} kg"
+        else:
+            return f"Gagal memuat! Muatan akan melebihi kapasitas maksimum {self.muatan_maksimum} kg"
+    
+    def bongkar(self, berat):
+        if berat < 0:
+            return "Berat bongkar tidak boleh negatif!"
+        if berat <= self.muatan_saat_ini:
+            self.muatan_saat_ini -= berat
+            return f"Berhasil membongkar {berat} kg. Total muatan sekarang: {self.muatan_saat_ini} kg"
+        else:
+            return f"Gagal membongkar! Tidak cukup muatan (muatan saat ini: {self.muatan_saat_ini} kg)"
+\end{lstlisting}
+
+\subsection{Sistem Manajemen}
+Kelas \textit{ManajemenKendaraan} mengelola koleksi kendaraan dan menyediakan fungsionalitas untuk menambah dan melihat kendaraan.
+
+\begin{lstlisting}[language=Python, caption=Implementasi Kelas ManajemenKendaraan]
+class ManajemenKendaraan:
+    """
+    Kelas untuk mengelola koleksi kendaraan
+    """
+    def __init__(self):
+        self.kendaraan = []
+    
+    def tambah_kendaraan(self, kendaraan):
+        self.kendaraan.append(kendaraan)
+        return f"{type(kendaraan).__name__} berhasil ditambahkan ke sistem"
+    
+    def lihat_semua_kendaraan(self):
+        if not self.kendaraan:
+            return "Belum ada kendaraan yang terdaftar"
+        
+        hasil = "=== Daftar Kendaraan ===\n"
+        for idx, kendaraan in enumerate(self.kendaraan, 1):
+            hasil += f"{idx}. {type(kendaraan).__name__}: {kendaraan.info()}\n"
+        return hasil
+\end{lstlisting}
+
+\subsection{Fungsi Pembantu dan Program Utama}
+Program ini menyediakan fungsi-fungsi pembantu untuk membuat objek kendaraan dan fungsi main untuk menjalankan program.
+
+\begin{lstlisting}[language=Python, caption=Implementasi Fungsi Pembantu dan Program Utama]
+def buat_mobil():
+    print("\n=== Tambah Mobil Baru ===")
+    bahan_bakar = input("Masukkan jenis bahan bakar: ")
+    warna = input("Masukkan warna: ")
+    model = input("Masukkan model mobil: ")
+    
+    while True:
+        try:
+            jumlah_pintu = int(input("Masukkan jumlah pintu: "))
+            return Mobil(bahan_bakar, warna, model, jumlah_pintu)
+        except ValueError:
+            print("Error: Masukkan angka untuk jumlah pintu!")
+
+
+def buat_motor():
+    print("\n=== Tambah Motor Baru ===")
+    bahan_bakar = input("Masukkan jenis bahan bakar: ")
+    warna = input("Masukkan warna: ")
+    jenis_stang = input("Masukkan jenis stang (standar/clip-on/dll): ")
+    tipe_motor = input("Masukkan tipe motor (sport/bebek/matic/dll): ")
+    
+    return Motor(bahan_bakar, warna, jenis_stang, tipe_motor)
+
+
+def buat_truk():
+    print("\n=== Tambah Truk Baru ===")
+    bahan_bakar = input("Masukkan jenis bahan bakar: ")
+    warna = input("Masukkan warna: ")
+    
+    while True:
+        try:
+            muatan_maksimum = float(input("Masukkan muatan maksimum (kg): "))
+            jumlah_roda = int(input("Masukkan jumlah roda (minimal 4): "))
+            return Truk(bahan_bakar, warna, muatan_maksimum, jumlah_roda)
+        except ValueError:
+            print("Error: Masukkan angka yang valid!")
+
+
+def main():
+    sistem = ManajemenKendaraan()
+    
+    while True:
+        print("\n=== MANAJEMEN KENDARAAN ===")
+        print("1. Tambah Mobil")
+        print("2. Tambah Motor")
+        print("3. Tambah Truk")
+        print("4. Lihat Semua Kendaraan")
+        print("5. Keluar")
+        
+        pilihan = input("Pilih menu (1-5): ")
+        
+        if pilihan == "1":
+            mobil = buat_mobil()
+            print(sistem.tambah_kendaraan(mobil))
+            
+        elif pilihan == "2":
+            motor = buat_motor()
+            print(sistem.tambah_kendaraan(motor))
+            
+        elif pilihan == "3":
+            truk = buat_truk()
+            print(sistem.tambah_kendaraan(truk))
+            
+        elif pilihan == "4":
+            print(sistem.lihat_semua_kendaraan())
+            
+        elif pilihan == "5":
+            print("Terima kasih telah menggunakan program!")
+            break
+            
+        else:
+            print("Pilihan tidak valid!")
+
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+% Heading 1
+\section{Fitur Sistem}
+
+Sistem manajemen kendaraan memiliki fitur-fitur berikut:
+
+\subsection{Input Validasi}
+Sistem mengimplementasikan validasi input untuk memastikan data yang dimasukkan valid:
+\begin{itemize}
+    \item Untuk jumlah pintu mobil, hanya menerima input berupa angka
+    \item Untuk muatan maksimum truk, memverifikasi bahwa nilai yang dimasukkan berupa angka
+    \item Untuk jumlah roda truk, memastikan nilai minimal 4
+    \item Untuk operasi muat dan bongkar, memverifikasi bahwa berat tidak negatif dan sesuai dengan batasan muatan
+\end{itemize}
+
+\subsection{Penanganan Error}
+Sistem menangani berbagai jenis error:
+\begin{itemize}
+    \item \textit{ValueError} untuk input yang tidak valid
+    \item Pesan error yang informatif untuk operasi yang tidak berhasil
+    \item Validasi data untuk mencegah pembentukan objek yang tidak valid
+\end{itemize}
+
+\subsection{Menu Interaktif}
+Program menyediakan menu interaktif yang memungkinkan pengguna untuk:
+\begin{itemize}
+    \item Menambahkan mobil baru ke sistem
+    \item Menambahkan motor baru ke sistem
+    \item Menambahkan truk baru ke sistem
+    \item Melihat semua kendaraan yang terdaftar
+    \item Keluar dari program
+\end{itemize}
+
+% Heading 1
+\section{Analisis dan Hasil}
+
+\subsection{Analisis Performa}
+Sistem manajemen kendaraan ini memiliki performa yang efisien untuk operasi dasar:
+
+\begin{table}[h!]
+\centering
+\caption{Analisis Performa Operasi}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Operasi} & \textbf{Kompleksitas Waktu} & \textbf{Kompleksitas Ruang} \\
+\hline
+Tambah Kendaraan & O(1) & O(1) \\
+Lihat Semua Kendaraan & O(n) & O(n) \\
+Muat/Bongkar Muatan & O(1) & O(1) \\
+\hline
+\end{tabular}
+\label{tab:performa}
+\end{table}
+
+\subsection{Penerapan Prinsip OOP}
+Implementasi sistem ini berhasil menerapkan prinsip-prinsip OOP:
+
+\begin{table}[h!]
+\centering
+\caption{Evaluasi Penerapan Prinsip OOP}
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Prinsip} & \textbf{Implementasi} \\
+\hline
+Encapsulation & Atribut dan metode dikelompokkan dalam kelas yang sesuai \\
+\hline
+Inheritance & Kelas \textit{Mobil}, \textit{Motor}, dan \textit{Truk} mewarisi dari kelas \textit{Kendaraan} \\
+\hline
+Polymorphism & Metode \textit{info()} dan \textit{bergerak()} diimplementasikan secara berbeda di setiap kelas \\
+\hline
+Abstraction & Kelas \textit{Kendaraan} menyediakan interface umum tanpa implementasi detail \\
+\hline
+\end{tabular}
+\label{tab:prinsip-oop}
+\end{table}
+
+\subsection{Fleksibilitas dan Ekstensibilitas}
+Sistem ini dirancang dengan mempertimbangkan fleksibilitas dan ekstensibilitas:
+\begin{itemize}
+    \item Hierarki kelas memudahkan penambahan jenis kendaraan baru
+    \item Penggunaan polimorfisme memungkinkan perilaku khusus untuk setiap kelas
+    \item Sistem manajemen terpisah dari kelas kendaraan, memungkinkan pengembangan fitur manajemen tanpa mengubah kelas kendaraan
+\end{itemize}
+
+% Heading 1
+\section{Kesimpulan dan Pengembangan Masa Depan}
+
+\subsection{Kesimpulan}
+Proyek ini berhasil mengimplementasikan sistem manajemen kendaraan menggunakan konsep pemrograman berorientasi objek dalam bahasa Python. Sistem ini mendemonstrasikan penerapan prinsip-prinsip OOP seperti encapsulation, inheritance, polymorphism, dan abstraction. Implementasi ini berhasil mencapai tujuan untuk:
+\begin{itemize}
+    \item Menyediakan hierarki kelas yang sesuai untuk berbagai jenis kendaraan
+    \item Mengimplementasikan fungsionalitas khusus untuk setiap jenis kendaraan
+    \item Menyediakan sistem manajemen untuk mengelola koleksi kendaraan
+    \item Menyediakan antarmuka pengguna yang sederhana dan intuitif
+\end{itemize}
+
+\subsection{Pengembangan Masa Depan}
+Untuk pengembangan masa depan, beberapa fitur dan peningkatan dapat dipertimbangkan:
+\begin{enumerate}
+    \item \textbf{Penyimpanan Data Persisten}: Implementasi database untuk menyimpan data kendaraan secara permanen
+    \item \textbf{Antarmuka Grafis}: Pengembangan GUI untuk meningkatkan pengalaman pengguna
+    \item \textbf{Fitur Pencarian dan Filter}: Menambahkan kemampuan untuk mencari dan memfilter kendaraan berdasarkan kriteria tertentu
+    \item \textbf{Penambahan Jenis Kendaraan}: Memperluas hierarki kelas dengan jenis kendaraan tambahan seperti sepeda, bus, dan kereta
+    \item \textbf{Manajemen Lanjutan}: Penambahan fitur seperti penghitungan konsumsi bahan bakar, jadwal perawatan, dan pencatatan perjalanan
+\end{enumerate}
+
+% References and Bibliography
+\section{References}
+\begin{thebibliography}{9}
+\bibitem{python} Python Software Foundation. \textit{Python Language Reference, version 3.9}. Available at \url{http://www.python.org}.
+
+\bibitem{oop} Gamma, E., Helm, R., Johnson, R., Vlissides, J. (1994). \textit{Design Patterns: Elements of Reusable Object-Oriented Software}. Addison-Wesley.
+
+\bibitem{cleancode} Martin, R. C. (2008). \textit{Clean Code: A Handbook of Agile Software Craftsmanship}. Prentice Hall.
+\end{thebibliography}
+
+\end{document}
